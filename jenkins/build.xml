@@ -36,6 +36,7 @@
 				<exclude name="controller/**/*.php"/>
 				<exclude name="model/**/*.php"/>
 				<exclude name="view/**/*.php"/>
+				<exclude name="**/**/.gitkeep"/>
 			</fileset>
 			<fileset dir="../fuel/app/tasks">
 			</fileset>
