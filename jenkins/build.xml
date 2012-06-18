@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="ci_workshop" basedir="." default="all">
+
+	<property name="outputDir" value="."/>
+
+	<target name="phpcpd">
+		<phpcpd minTokens="10">
+			<fileset dir="../fuel/app/classes">
+				<include name="**/**/*.php"/>
+			</fileset>
+			<fileset dir="../fuel/app/tasks">
+				<include name="**/**/*.php"/>
+			</fileset>
+			<formatter type="pmd"
+					outfile="${outputDir}/cpd.xml"/>
+		</phpcpd>
+	</target>
+
+	<target name="phpmd">
+		<phpmd rulesets="ruleset.xml">
+			<fileset dir="../fuel/app/classes">
+				<include name="**/**/*.php"/>
+			</fileset>
+			<fileset dir="../fuel/app/tasks">
+				<include name="**/**/*.php"/>
+			</fileset>
+		<formatter type="xml"
+			outfile="${outputDir}/pmd.xml"/>
+		</phpmd>
+	</target>
+
+	<target name="phpunit">
+		<mkdir dir="clover"/>
+		<coverage-setup database="${outputDir}/clover/coverage.db">
+			<fileset dir="../fuel/app/classes">
+				<exclude name="controller/**/*.php"/>
+				<exclude name="model/**/*.php"/>
+				<exclude name="view/**/*.php"/>
+			</fileset>
+			<fileset dir="../fuel/app/tasks">
+			</fileset>
+		</coverage-setup>
+		<phpunit
+			bootstrap="./bootstrap_phpunit.php"
+			codecoverage="true">
+			<formatter type="xml" outfile="${outputDir}/phpunit.xml"/>
+			<formatter type="clover" outfile="${outputDir}/clover/clover.xml"/>
+			<batchtest>
+				<fileset dir="../fuel/app/tests">
+					<include name="**/*Test.php"/>
+				</fileset>
+			</batchtest>
+		</phpunit>
+		<coverage-report outfile="clover.xml">
+			<report todir="${outputDir}/clover" />
+		</coverage-report>
+	</target>
+
+	<target name="phpdoc">
+		<mkdir dir="./phpdoc"/>
+		<phpdoc title="API Documentation"
+			destdir="./phpdoc"
+			output="HTML:Smarty:PHP">
+			<fileset dir="../fuel/app/classes">
+			</fileset>
+			<fileset dir="../fuel/app/tasks">
+			</fileset>
+		</phpdoc>
+	</target>
+
+	<target name="all" depends="phpcpd,phpmd,phpunit,phpdoc">
+	</target>
+
+</project>

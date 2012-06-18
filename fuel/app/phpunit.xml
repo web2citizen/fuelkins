@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit colors="false" stopOnFailure="false" bootstrap="../core/bootstrap_phpunit.php">
+	<php>
+		<server name="doc_root" value="../../"/>
+		<server name="app_path" value="fuel/app"/>
+		<server name="core_path" value="fuel/core"/>
+		<server name="package_path" value="fuel/packages"/>
+	</php>
+	<testsuites>
+		<testsuite name="core">
+			<directory suffix=".php">../core/tests</directory>
+		</testsuite>
+		<testsuite name="packages">
+			<directory suffix=".php">../packages/*/tests</directory>
+		</testsuite>
+		<testsuite name="app">
+			<directory suffix="_.php">../app/tests</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../app/classes</directory>
+			<exclude>
+				<directory suffix=".php">../app/classes/controller</directory>
+				<directory suffix=".php">../app/classes/view</directory>
+				</exclude>
+		</whitelist>
+	</filter>
+</phpunit>
